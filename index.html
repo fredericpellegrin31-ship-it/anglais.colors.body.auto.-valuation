@@ -162,9 +162,6 @@
     </div>
 
     <script>
-        const SVG_KNEE = `<svg viewBox="0 0 100 100" class="w-16 h-16"><text x="20" y="80" font-size="50">🦵</text><path d="M85 15 L55 45" stroke="#ef4444" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M55 30 L55 45 L70 45" stroke="#ef4444" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`;
-        const SVG_SHOULDERS = `<svg viewBox="0 0 100 100" class="w-16 h-16"><text x="50%" y="90" font-size="75" text-anchor="middle" opacity="0.3" filter="grayscale(1)">👤</text><path d="M2 45 L26 62" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M16 62 L26 62 L26 52" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M98 45 L74 62" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M84 62 L74 62 L74 52" stroke="#ef4444" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
-
         const COLORS = [
             { id: 'white', en: 'white', type: 'color', val: '#FFFFFF' },
             { id: 'black', en: 'black', type: 'color', val: '#000000' },
@@ -179,19 +176,20 @@
             { id: 'orange', en: 'orange', type: 'color', val: '#F97316' }
         ];
 
+        // Mise à jour des parties du corps avec les images demandées
         const BODY_PARTS = [
-            { id: 'head', en: 'head', type: 'icon', val: '🙆‍♂️' },
-            { id: 'shoulders', en: 'shoulders', type: 'svg', val: SVG_SHOULDERS },
-            { id: 'knees', en: 'knees', type: 'svg', val: SVG_KNEE },
-            { id: 'toes', en: 'toes', type: 'icon', val: '👣' },
-            { id: 'eyes', en: 'eyes', type: 'icon', val: '👀' },
-            { id: 'ears', en: 'ears', type: 'icon', val: '👂' },
-            { id: 'mouth', en: 'mouth', type: 'icon', val: '👄' },
-            { id: 'nose', en: 'nose', type: 'icon', val: '👃' },
-            { id: 'hair', en: 'hair', type: 'icon', val: '💇' },
-            { id: 'teeth', en: 'teeth', type: 'icon', val: '🦷' },
-            { id: 'big', en: 'big', type: 'icon', val: '🐘' },
-            { id: 'small', en: 'small', type: 'icon', val: '🐭' }
+            { id: 'head', en: 'head', type: 'image', val: 'HEAD.png' },
+            { id: 'shoulders', en: 'shoulders', type: 'image', val: 'SHOULDERS.png' },
+            { id: 'knees', en: 'knees', type: 'image', val: 'KNEES.png' },
+            { id: 'toes', en: 'toes', type: 'image', val: 'TOES.png' },
+            { id: 'eyes', en: 'eyes', type: 'image', val: 'EYE.png' },
+            { id: 'ears', en: 'ears', type: 'image', val: 'EAR.png' },
+            { id: 'mouth', en: 'mouth', type: 'image', val: 'MOUTH.png' },
+            { id: 'nose', en: 'nose', type: 'image', val: 'NOSE.png' },
+            { id: 'hair', en: 'hair', type: 'image', val: 'HAIR.png' },
+            { id: 'teeth', en: 'teeth', type: 'icon', val: '🦷' }, // Émoticone conservée
+            { id: 'big', en: 'big', type: 'image', val: 'BIG (2).png' },
+            { id: 'small', en: 'small', type: 'image', val: 'SMALL.png' }
         ];
 
         let state = {
@@ -215,16 +213,24 @@
             const div = document.createElement('div');
             const dim = size === "large" ? "w-full aspect-square" : "w-16 h-16";
             div.className = `${dim} flex items-center justify-center rounded-2xl overflow-hidden shadow-inner cursor-pointer`;
+            
             if (item.type === 'color') {
                 div.style.backgroundColor = item.val;
                 div.style.border = "1px solid #e2e8f0";
             } else if (item.type === 'icon') {
                 div.className += " text-4xl sm:text-5xl bg-white";
                 div.textContent = item.val;
+            } else if (item.type === 'image') {
+                const img = document.createElement('img');
+                img.src = item.val;
+                img.alt = item.en;
+                img.className = "w-full h-full object-contain bg-white p-2";
+                div.appendChild(img);
             } else {
                 div.className += " bg-white p-2";
                 div.innerHTML = item.val;
             }
+            
             if(size === "small") {
                 div.onclick = (e) => { e.stopPropagation(); speak(item.en); };
             }
